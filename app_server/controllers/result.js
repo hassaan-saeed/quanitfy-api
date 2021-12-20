@@ -6,7 +6,7 @@ const multer = require('multer');
 
 
 module.exports.create = function (req, res, next){
-    console.log(req.file);
+    // console.log(req.file);
     const image = new Image({
         _id: new mongoose.Types.ObjectId(),
         path: req.file.path
@@ -26,16 +26,33 @@ module.exports.create = function (req, res, next){
     });
 
     result
-        .save()
-        .then(result => {
-            res.status(201).json({
-                message: "Result Created"
-            });
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({
-                error: err
-            });
+    .save()
+    .then(result => {
+        res.status(201).json({
+            message: "Result Created"
         });
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
+}
+
+module.exports.delete = function (req, res, next){
+
+    Result.remove({_id: req.params.id})
+    .exec()
+    .then(result => {
+        res.status(200).json({
+            message: "Result Deleted"
+        });
+    })
+    .catch(err =>{
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
+    });
 }
